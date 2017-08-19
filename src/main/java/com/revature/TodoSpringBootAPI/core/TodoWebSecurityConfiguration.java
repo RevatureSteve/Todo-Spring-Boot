@@ -23,24 +23,17 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @EnableWebSecurity
 public class TodoWebSecurityConfiguration extends WebSecurityConfigurerAdapter{
 
-//	@Autowired
-//    private SimpleUrlAuthenticationSuccessHandler restAuthenticationSuccessHandler;
-//
-//    @Autowired
-//    private AuthenticationFailureHandler restAuthenticationFailureHandler;
-//	
 	@Autowired
 	@Qualifier("userDetailsService")
 	UserDetailsService userDetailsService;
 	
 	
-	
-//	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		System.out.println("configureGlobal");
-		auth.userDetailsService(userDetailsService);
+		//Pull User Object from a external Resource like a file or database
+		auth.userDetailsService(userDetailsService); //Load User by Username is the important method found here
+	
+		//Use below for testing without an DB
 //		auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
-		//.passwordEncoder(new BCryptPasswordEncoder());
 	}
 	
 	
@@ -58,83 +51,40 @@ public class TodoWebSecurityConfiguration extends WebSecurityConfigurerAdapter{
 			.csrf().disable()
 			.authorizeRequests()
 				.antMatchers("/").permitAll()
-				.antMatchers("/test**").authenticated().and()
+				.antMatchers("/test**")
 				
-//				.hasRole("ADMIN").and()
+				.hasRole("USERZ").and()
 			.formLogin()
-				.loginPage("/").loginProcessingUrl("/authenticate")
-				.successHandler(loginSuccessHandler()).failureHandler(loginFailureHandler())
-				.usernameParameter("username")
-				.passwordParameter("password")
+				.loginPage("/")
+				.loginProcessingUrl("/authenticate") //Spring Security processes the username & password automatically at the URL you specify e.g. /authenticate
+					.successHandler(loginSuccessHandler()) //whose handling success
+					.failureHandler(loginFailureHandler()) //whose handling failure, methods are below 
+					.usernameParameter("username") 
+					.passwordParameter("password")
 				.permitAll().and()
 			.logout()
-				.logoutUrl("/logout").deleteCookies("JSESSIONID").permitAll();
+				.logoutUrl("/logout")
+				.deleteCookies("JSESSIONID").permitAll();
 				
 	}
 	
+	/*
+	 * Simple methods but may use RestAuthenticationFailureHandler & SuccessHandler Class instead of these
+	 */
 	 public AuthenticationSuccessHandler loginSuccessHandler() {
 	        return (request, response, authentication) -> {
-	        	System.out.println("success login");
+	        	System.err.println("Login-Success");
 	        	response.sendRedirect("/test");
 	        	};
 	    }
 
 	    public AuthenticationFailureHandler loginFailureHandler() {
 	        return (request, response, exception) -> {
-//	            request.getSession().setAttribute("flash", new FlashMessage("Incorrect username and/or password. Please try again.", FlashMessage.Status.FAILURE));
-	        	System.out.println("FAILED Login ");
+	        	System.err.println("Login-Failed");
 	            response.sendRedirect("/");
 	        };
 	    }
 	    
 	    
-//	    @Bean
-//	    public UserDetailsService userDetailsService() {
-//	      return new UserDetailsService() {
-//
-//	        @Transactional
-//	        @Override
-//	        public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//
-//	          SiteUser user = userRepository.findByUsername(username);
-//
-//	          Collection<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
-//	          SimpleGrantedAuthority userAuthority = new SimpleGrantedAuthority("ROLE_USER");
-//	          SimpleGrantedAuthority adminAuthority = new SimpleGrantedAuthority("ROLE_ADMIN");
-//	          User u = null;
-//	          if(user == null) {
-//	            throw new UsernameNotFoundException("No such User: " + username);
-//	          } else {
-//
-//	            if (user.getRole().equals("USER")) {
-//	              authorities.add(userAuthority);
-//	            } else if (user.getRole().equals("ADMIN")) {
-//	              authorities.add(userAuthority);
-//	              authorities.add(adminAuthority);
-//	            }
-//	            u = new User(user.getUsername(), user.getPassword(), authorities);
-//	          }
-//
-//	          return u;
-//	        }
-//
-//	      };
-//	    }
 	    
-	    
-	    @Bean
-	    public EvaluationContextExtension securityExtension() {
-	        return new EvaluationContextExtensionSupport() {
-	            @Override
-	            public String getExtensionId() {
-	                return "security";
-	            }
-
-	            @Override
-	            public Object getRootObject() {
-	                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	                return new SecurityExpressionRoot(authentication) {};
-	            }
-	        };
-	    }
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 //@RequestMapping("/rest/")
 public class BaseCtrl {
 
-//	@GetMapping("/")
+//	@GetMapping("/") - shorthand for Get RequestMapping
 	@RequestMapping(value="/")
 	public String loginPage(){
 		System.out.println("Login - GET");
@@ -19,5 +19,11 @@ public class BaseCtrl {
 	public String test(){
 		System.out.println("Test -GET");
 		return "forward:Home.html";
+	}
+	
+	@GetMapping("/error")
+	public String errorMapping(){
+		System.out.println("Error -GET");
+		return "forward:app.html";
 	}
 }

@@ -17,23 +17,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.revature.TodoSpringBootAPI.core.BaseEntity;
-
 @Entity
 @Table(name = "TODO_USER")
 @Component
 public class TodoUser implements UserDetails {
 
-	/*
-	 * BaseEntity - made ourselves for repeated states like id
-	 * 
-	 * private int id; //is inherited from BaseEntity
-	 * 
-	 */
 
-	/**
-	 * 
-	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
@@ -82,9 +71,12 @@ public class TodoUser implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
+		//Collection of User's authorities/roles e.g. ROLE_USER, ROLE_ADMIN etc
 		List<GrantedAuthority> authorities = new ArrayList<>();
-		System.out.println("TodoUser - getRole " + this.role.getRole());
+		
+		//Would have to loop through if TodoUser has more than 1 Role
 		authorities.add(new SimpleGrantedAuthority(role.getRole()));
+		
 		return authorities;
 	}
 

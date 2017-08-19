@@ -20,6 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.revature.TodoSpringBootAPI.domain.TodoUser;
 import com.revature.TodoSpringBootAPI.repository.TodoUserRepo;
 
+
+/*
+ * The only purpose of this class is to provide Spring Security's AuthenticationManager
+ * 	the User's credentials
+ */
 @Service("userDetailsService")
 @Transactional
 public class ProcessLogin implements UserDetailsService {
@@ -27,53 +32,49 @@ public class ProcessLogin implements UserDetailsService {
 	@Autowired
 	TodoUserRepo todoRepoImpl;
 	
+	/*
+	 * Load the TodoUser Record from the DB into an Object and convert TodoUser object
+	 * 		into a Spring Security User Object 
+	 * 		Note: Our TodoUser implements UserDetails, it is not necessary to convert
+	 * 			but the example of how to convert to a Spring Security User is at the bottom commented out
+	 */
 	 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		System.out.println("Load User by Username" + username);
-		TodoUser user = todoRepoImpl.findByUsername(username);
-		System.out.println("User from DB: " + user);
-		Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-	
-		// Build user's authorities
-		authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+		TodoUser todoDbUserRecord = todoRepoImpl.findByUsername(username);
 		
-		List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(authorities);
-		System.out.println(Result);
-//		return new User(username, "123", Result);
-//		return new TodoUser("steve", "123", true, true, true, true, new TodoRole("ROLE_ADMIN"));
+		//Collection of TodoUser's GrantedAuthority aka user's permissions/roles to the application
+			//Are they a Member, Trial-Member, Admin, etc 
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+	
+		// Build/add user's authorities to a Collection
+		authorities.add(new SimpleGrantedAuthority(todoDbUserRecord.getRole().getRole()));
+//		authorities.add(new SimpleGrantedAuthority("ROLE_USER")); //This is equivalent to the above line that is pulled from the DB
+		
+		return todoDbUserRecord; //Our TodoUser Class implements UserDetails, 
+			//if our Pojo doesn't we would need to convert to a TodoUser into a Spring Security User
+			//Example below
 
+		/*
+		 * 
+			//Example purpose only for setting booleans to true, should be stored with the User Record
 		boolean accountNonExpired = true;
 	    boolean credentialsNonExpired = true;
 	    boolean accountNonLocked = true;
 		boolean isEnabled = true;
-	    return new User(
+		
+	    return new org.springframework.security.core.userdetails.User(
 	            user.getUsername(),
 	            user.getPassword(),
 	            isEnabled,
 	            accountNonExpired,
 	            credentialsNonExpired,
 	            accountNonLocked,
-	            getAuthorities(user.getRole().getRole()));
+	            authorities);
+		return user;
+		
+		*/
 	    }
 
-	public List<String> getRolesAsList(String roles) {
-	    List <String> rolesAsList = new ArrayList<String>();
-	        rolesAsList.add("ROLE_USER");
-	    return rolesAsList;
-	}
 
-	public static List<GrantedAuthority> getGrantedAuthorities(List<String> roles) {
-	    List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-	    for (String role : roles) {
-	        authorities.add(new SimpleGrantedAuthority(role));
-	    }
-	    return authorities;
-	}
-
-	public Collection<? extends GrantedAuthority> getAuthorities(String roles) {
-	    List<GrantedAuthority> authList = getGrantedAuthorities(getRolesAsList(roles));
-	    System.out.println("Auth list: "+authList);
-	    return authList;
-	}
 }

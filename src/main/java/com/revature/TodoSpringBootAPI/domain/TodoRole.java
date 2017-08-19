@@ -12,7 +12,10 @@ import org.springframework.stereotype.Component;
 @Table(name = "TODO_ROLE")
 @Component
 public class TodoRole {
-
+/*
+ * This class is for TodoUser Authorities/Roles like ROLE_ADMIN, ROLE_USER, ROLE_TRIAL_MEMBER etc
+ * 		in this example a User can only have 1 role
+ */
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
