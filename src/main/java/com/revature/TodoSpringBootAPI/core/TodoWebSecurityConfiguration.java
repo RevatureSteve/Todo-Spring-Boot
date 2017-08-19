@@ -51,9 +51,9 @@ public class TodoWebSecurityConfiguration extends WebSecurityConfigurerAdapter{
 			.csrf().disable()
 			.authorizeRequests()
 				.antMatchers("/").permitAll()
-				.antMatchers("/test**")
-				
-				.hasRole("USERZ").and()
+				.antMatchers("/home**").authenticated() //Logged in user, no role necessary
+				.antMatchers("/user**").hasRole("USER") //User must have the ROLE_USER to see these pages
+				.antMatchers("/admin**").hasRole("ADMIN").and() //User must have ROLE_ADMIN to see these pages
 			.formLogin()
 				.loginPage("/")
 				.loginProcessingUrl("/authenticate") //Spring Security processes the username & password automatically at the URL you specify e.g. /authenticate
@@ -64,7 +64,8 @@ public class TodoWebSecurityConfiguration extends WebSecurityConfigurerAdapter{
 				.permitAll().and()
 			.logout()
 				.logoutUrl("/logout")
-				.deleteCookies("JSESSIONID").permitAll();
+				.deleteCookies("JSESSIONID")
+				.permitAll();
 				
 	}
 	
@@ -74,7 +75,7 @@ public class TodoWebSecurityConfiguration extends WebSecurityConfigurerAdapter{
 	 public AuthenticationSuccessHandler loginSuccessHandler() {
 	        return (request, response, authentication) -> {
 	        	System.err.println("Login-Success");
-	        	response.sendRedirect("/test");
+	        	response.sendRedirect("/home");
 	        	};
 	    }
 

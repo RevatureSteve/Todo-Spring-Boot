@@ -15,15 +15,21 @@ public class BaseCtrl {
 		return "forward:app.html";
 	}
 	
-	@GetMapping("/test")
+	@GetMapping("/home")
 	public String test(){
-		System.out.println("Test -GET");
+		System.out.println("Home -GET");
 		return "forward:Home.html";
 	}
 	
-	@GetMapping("/error")
-	public String errorMapping(){
-		System.out.println("Error -GET");
-		return "forward:app.html";
+	@GetMapping("/user")
+	public String userMapping(){
+		System.err.println("User -GET");
+		return "forward:User.html";
+	}
+	
+	@GetMapping("/admin")
+	public String adminMapping(){
+		System.err.println("Admin -GET");
+		return "forward:Admin.html";
 	}
 }
