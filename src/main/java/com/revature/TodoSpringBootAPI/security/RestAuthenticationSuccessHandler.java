@@ -1,4 +1,4 @@
-package com.steveace6.TodoSpringBootAPI.security;
+package com.revature.TodoSpringBootAPI.security;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.steveace6.TodoSpringBootAPI.domain.TodoUser;
+import com.revature.TodoSpringBootAPI.domain.TodoUser;
 
 
 

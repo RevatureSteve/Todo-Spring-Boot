@@ -1,4 +1,4 @@
-package com.steveace6.TodoSpringBootAPI.security;
+package com.revature.TodoSpringBootAPI.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,15 +17,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.steveace6.TodoSpringBootAPI.domain.TodoUser;
-import com.steveace6.TodoSpringBootAPI.repository.TodoRepo;
+import com.revature.TodoSpringBootAPI.domain.TodoUser;
+import com.revature.TodoSpringBootAPI.repository.TodoUserRepo;
 
 @Service("userDetailsService")
 @Transactional
 public class ProcessLogin implements UserDetailsService {
 
 	@Autowired
-	TodoRepo todoRepoImpl;
+	TodoUserRepo todoRepoImpl;
 	
 	 
 	@Override

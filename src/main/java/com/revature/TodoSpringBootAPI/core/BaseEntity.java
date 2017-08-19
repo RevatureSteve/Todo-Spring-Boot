@@ -1,4 +1,4 @@
-package com.steveace6.TodoSpringBootAPI.core;
+package com.revature.TodoSpringBootAPI.core;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

@@ -1,4 +1,4 @@
-package com.steveace6.TodoSpringBootAPI;
+package com.revature.TodoSpringBootAPI;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

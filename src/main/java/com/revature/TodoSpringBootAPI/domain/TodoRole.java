@@ -1,4 +1,4 @@
-package com.steveace6.TodoSpringBootAPI.domain;
+package com.revature.TodoSpringBootAPI.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

@@ -1,4 +1,4 @@
-package com.steveace6.TodoSpringBootAPI.core;
+package com.revature.TodoSpringBootAPI.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

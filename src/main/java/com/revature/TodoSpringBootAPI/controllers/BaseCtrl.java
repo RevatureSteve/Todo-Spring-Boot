@@ -1,4 +1,4 @@
-package com.steveace6.TodoSpringBootAPI.controllers;
+package com.revature.TodoSpringBootAPI.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

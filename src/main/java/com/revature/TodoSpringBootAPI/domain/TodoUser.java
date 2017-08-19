@@ -1,4 +1,4 @@
-package com.steveace6.TodoSpringBootAPI.domain;
+package com.revature.TodoSpringBootAPI.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,7 +17,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.steveace6.TodoSpringBootAPI.core.BaseEntity;
+import com.revature.TodoSpringBootAPI.core.BaseEntity;
 
 @Entity
 @Table(name = "TODO_USER")
